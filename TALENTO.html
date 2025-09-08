@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TALENTO - Sports Talent Platform</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Login/Signup Page -->
+    <section id="login-page" class="h-screen flex items-center justify-center p-4">
+        <div class="w-full max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <img src="TALENTO.png" alt="TALENTO Logo" class="w-48 mx-auto mb-4">
+                <p class="text-center text-gray-600">Discovering and pushing hidden talent forward</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Athlete Login Card -->
+                <div id="athlete-login-card" class="bg-white p-8 rounded-2xl shadow-xl flex flex-col items-center text-center transform transition-transform duration-300 hover:scale-105">
+                    <span class="text-6xl mb-4" role="img" aria-label="athlete">🏃</span>
+                    <h2 class="text-2xl font-bold mb-2">Athlete Login</h2>
+                    <p class="text-gray-600 mb-6">Log in to access your Sports DNA Profile and training plans.</p>
+                    <form class="space-y-4 w-full">
+                        <div>
+                            <label for="athlete-email" class="sr-only">Email</label>
+                            <input type="email" id="athlete-email" placeholder="Email Address" class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-orange-500 transition-colors">
+                        </div>
+                        <div>
+                            <label for="athlete-password" class="sr-only">Password</label>
+                            <input type="password" id="athlete-password" placeholder="Password" class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-orange-500 transition-colors">
+                        </div>
+                        <button type="button" onclick="loginUser('athlete')" class="w-full bg-orange-500 text-white py-3 px-6 rounded-xl font-semibold hover:bg-orange-600 transition-colors duration-300">
+                            Login
+                        </button>
+                    </form>
+                    <p class="mt-4 text-center text-gray-600 text-sm">Don't have an account? <a href="#" onclick="showForm('signup-form', 'athlete')" class="text-orange-600 font-semibold hover:underline">Sign Up Now</a></p>
+                </div>
+
+                <!-- Coach Login Card -->
+                <div id="coach-login-card" class="bg-white p-8 rounded-2xl shadow-xl flex flex-col items-center text-center transform transition-transform duration-300 hover:scale-105">
+                    <span class="text-6xl mb-4" role="img" aria-label="coach">👨‍🏫</span>
+                    <h2 class="text-2xl font-bold mb-2">Coach Login</h2>
+                    <p class="text-gray-600 mb-6">Log in to discover and connect with talented athletes.</p>
+                    <form class="space-y-4 w-full">
+                        <div>
+                            <label for="coach-email" class="sr-only">Email</label>
+                            <input type="email" id="coach-email" placeholder="Email Address" class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-gray-800 transition-colors">
+                        </div>
+                        <div>
+                            <label for="coach-password" class="sr-only">Password</label>
+                            <input type="password" id="coach-password" placeholder="Password" class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-gray-800 transition-colors">
+                        </div>
+                        <button type="button" onclick="loginUser('coach')" class="w-full bg-gray-800 text-white py-3 px-6 rounded-xl font-semibold hover:bg-gray-700 transition-colors duration-300">
+                            Login
+                        </button>
+                    </form>
+                    <p class="mt-4 text-center text-gray-600 text-sm">Don't have an account? <a href="#" onclick="showForm('signup-form', 'coach')" class="text-gray-800 font-semibold hover:underline">Sign Up Now</a></p>
+                </div>
+            </div>
+
+            <!-- Signup Form (Initially hidden) -->
+            <div id="signup-form" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4">
+                <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md mx-4 text-center">
+                    <img src="TALENTO.png" alt="TALENTO Logo" class="w-32 mx-auto mb-6">
+                    <h2 class="text-2xl font-bold mb-6">Sign Up</h2>
+                    <p id="signup-message" class="text-gray-600 mb-4"></p>
+                    <form class="space-y-4">
+                        <div>
+                            <label for="signup-email" class="sr-only">Email</label>
+                            <input type="email" id="signup-email" placeholder="Email Address" class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-orange-500 transition-colors">
+                        </div>
+                        <div>
+                            <label for="signup-password" class="sr-only">Password</label>
+                            <input type="password" id="signup-password" placeholder="Create Password" class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-orange-500 transition-colors">
+                        </div>
+                        <button type="button" onclick="signupUser()" class="w-full bg-orange-500 text-white py-3 px-6 rounded-xl font-semibold hover:bg-orange-600 transition-colors duration-300 transform hover:scale-105">
+                            Create Account
+                        </button>
+                    </form>
+                    <button onclick="hideForm('signup-form')" class="mt-4 text-gray-600 font-semibold hover:underline">
+                        Go Back to Login
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Athlete: Sports Selection Page -->
+    <section id="athlete-selection" class="hidden h-screen flex items-center justify-center">
+        <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-xl mx-4">
+            <img src="TALENTO.png" alt="TALENTO Logo" class="w-32 mx-auto mb-6">
+            <h1 class="text-3xl font-bold text-center mb-6 text-gray-900">Choose Your Sport</h1>
+            <p class="text-center text-gray-600 mb-8">Select a sport to create your Sports DNA Profile.</p>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <!-- Sport Card 1 -->
+                <button onclick="selectSport('cricket')" class="group p-6 flex flex-col items-center bg-gray-50 rounded-xl hover:bg-orange-50 transition-colors duration-300 transform hover:scale-105">
+                    <span class="text-5xl mb-2" role="img" aria-label="cricket-bat">🏏</span>
+                    <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600">Cricket</span>
+                </button>
+                <!-- Sport Card 2 -->
+                <button onclick="selectSport('football')" class="group p-6 flex flex-col items-center bg-gray-50 rounded-xl hover:bg-orange-50 transition-colors duration-300 transform hover:scale-105">
+                    <span class="text-5xl mb-2" role="img" aria-label="football">⚽</span>
+                    <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600">Football</span>
+                </button>
+                <!-- Sport Card 3 -->
+                <button onclick="selectSport('athletics')" class="group p-6 flex flex-col items-center bg-gray-50 rounded-xl hover:bg-orange-50 transition-colors duration-300 transform hover:scale-105">
+                    <span class="text-5xl mb-2" role="img" aria-label="runner">🏃‍♂️</span>
+                    <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600">Athletics</span>
+                </button>
+                <!-- Added Sport 4 -->
+                <button onclick="selectSport('kabaddi')" class="group p-6 flex flex-col items-center bg-gray-50 rounded-xl hover:bg-orange-50 transition-colors duration-300 transform hover:scale-105">
+                    <span class="text-5xl mb-2" role="img" aria-label="kabaddi">🤼</span>
+                    <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600">Kabaddi</span>
+                </button>
+                <!-- Added Sport 5 -->
+                <button onclick="selectSport('hockey')" class="group p-6 flex flex-col items-center bg-gray-50 rounded-xl hover:bg-orange-50 transition-colors duration-300 transform hover:scale-105">
+                    <span class="text-5xl mb-2" role="img" aria-label="hockey">🏑</span>
+                    <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600">Hockey</span>
+                </button>
+                <!-- Added Sport 6 -->
+                <button onclick="selectSport('basketball')" class="group p-6 flex flex-col items-center bg-gray-50 rounded-xl hover:bg-orange-50 transition-colors duration-300 transform hover:scale-105">
+                    <span class="text-5xl mb-2" role="img" aria-label="basketball">🏀</span>
+                    <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600">Basketball</span>
+                </button>
+                <!-- Added Sport 7 -->
+                <button onclick="selectSport('badminton')" class="group p-6 flex flex-col items-center bg-gray-50 rounded-xl hover:bg-orange-50 transition-colors duration-300 transform hover:scale-105">
+                    <span class="text-5xl mb-2" role="img" aria-label="badminton">🏸</span>
+                    <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600">Badminton</span>
+                </button>
+                <!-- Added Sport 8 -->
+                <button onclick="selectSport('chess')" class="group p-6 flex flex-col items-center bg-gray-50 rounded-xl hover:bg-orange-50 transition-colors duration-300 transform hover:scale-105">
+                    <span class="text-5xl mb-2" role="img" aria-label="chess">♟️</span>
+                    <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600">Chess</span>
+                </button>
+                 <!-- Added Sport 9 -->
+                 <button onclick="selectSport('volleyball')" class="group p-6 flex flex-col items-center bg-gray-50 rounded-xl hover:bg-orange-50 transition-colors duration-300 transform hover:scale-105">
+                    <span class="text-5xl mb-2" role="img" aria-label="volleyball">🏐</span>
+                    <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600">Volleyball</span>
+                </button>
+                 <!-- Added Sport 10 -->
+                 <button onclick="selectSport('tennis')" class="group p-6 flex flex-col items-center bg-gray-50 rounded-xl hover:bg-orange-50 transition-colors duration-300 transform hover:scale-105">
+                    <span class="text-5xl mb-2" role="img" aria-label="tennis">🎾</span>
+                    <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600">Tennis</span>
+                </button>
+                <!-- Added Sport 11 -->
+                <button onclick="selectSport('table-tennis')" class="group p-6 flex flex-col items-center bg-gray-50 rounded-xl hover:bg-orange-50 transition-colors duration-300 transform hover:scale-105">
+                    <span class="text-5xl mb-2" role="img" aria-label="table-tennis">🏓</span>
+                    <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600">Table Tennis</span>
+                </button>
+                <!-- Add more sports here -->
+                <button onclick="selectSport('other')" class="group p-6 flex flex-col items-center bg-gray-50 rounded-xl hover:bg-orange-50 transition-colors duration-300 transform hover:scale-105">
+                    <span class="text-5xl mb-2" role="img" aria-label="more-sports">...</span>
+                    <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600">Other</span>
+                </button>
+            </div>
+            <button onclick="showPage('login-page')" class="mt-8 text-orange-600 font-semibold hover:underline">
+                Go Back
+            </button>
+        </div>
+    </section>
+
+    <!-- Athlete: Home Dashboard Page -->
+    <section id="athlete-dashboard" class="hidden min-h-screen p-4 md:p-8">
+        <header class="flex justify-between items-center bg-white p-4 rounded-xl shadow-md">
+            <div class="flex items-center space-x-4">
+                <img src="TALENTO.png" alt="TALENTO Logo" class="h-10 w-auto">
+                <h1 class="text-xl md:text-2xl font-bold text-gray-900">Athlete Dashboard</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-gray-700">Hello, Athlete!</span>
+                <button onclick="showPage('login-page')" class="text-red-500 hover:text-red-700 font-semibold">
+                    Logout
+                </button>
+            </div>
+        </header>
+
+        <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column: Profile & Summary -->
+            <div class="lg:col-span-1 space-y-8">
+                <!-- Profile Card -->
+                <div class="bg-white p-6 rounded-2xl shadow-xl">
+                    <h2 class="text-2xl font-bold mb-4 text-gray-900">My Profile</h2>
+                    <div class="flex items-center space-x-4 mb-4">
+                        <img src="https://placehold.co/100x100/A0A0A0/FFFFFF?text=AT" alt="Profile" class="rounded-full h-16 w-16 md:h-20 md:w-20 object-cover">
+                        <div>
+                            <p class="text-xl font-semibold">Aman Kumar</p>
+                            <p class="text-sm text-gray-500" id="selected-sport-display">Sport: Cricket</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">My DNA Score: <span class="text-orange-600 font-bold text-lg">85/100</span></p>
+                    <p class="text-gray-600">Next Level: <span class="text-yellow-500 font-bold text-lg">State Level</span></p>
+                </div>
+                <!-- DNA Score Card -->
+                <div class="bg-white p-6 rounded-2xl shadow-xl">
+                    <h2 class="text-2xl font-bold mb-4 text-gray-900">DNA Score Card</h2>
+                    <ul class="space-y-3">
+                        <li class="flex items-center justify-between text-gray-700">
+                            <span class="font-semibold">Speed</span>
+                            <span class="text-sm">90/100</span>
+                        </li>
+                        <li class="flex items-center justify-between text-gray-700">
+                            <span class="font-semibold">Agility</span>
+                            <span class="text-sm">88/100</span>
+                        </li>
+                        <li class="flex items-center justify-between text-gray-700">
+                            <span class="font-semibold">Resilience</span>
+                            <span class="text-sm">82/100</span>
+                        </li>
+                        <li class="flex items-center justify-between text-gray-700">
+                            <span class="font-semibold">Reaction Time</span>
+                            <span class="text-sm">80/100</span>
+                        </li>
+                        <!-- Add more DNA metrics here -->
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Right Column: Main Actions -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Call to Action Card -->
+                <div class="bg-white p-8 rounded-2xl shadow-xl text-center">
+                    <h2 class="text-2xl font-bold mb-4 text-gray-900">Record Your Performance</h2>
+                    <p class="text-gray-600 mb-6">Upload a video to analyze your skills and improve your DNA score.</p>
+                    <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                        <button class="bg-orange-500 text-white py-3 px-6 rounded-xl font-semibold hover:bg-orange-600 transition-colors duration-300 transform hover:scale-105">
+                            Open Camera
+                        </button>
+                        <button class="bg-gray-200 text-gray-800 py-3 px-6 rounded-xl font-semibold hover:bg-gray-300 transition-colors duration-300 transform hover:scale-105">
+                            Upload Video
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Personalized Training Plan Card -->
+                <div class="bg-white p-6 rounded-2xl shadow-xl">
+                    <h2 class="text-2xl font-bold mb-4 text-gray-900">Training for You</h2>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
+                            <p class="font-semibold text-yellow-800">Weakness: Arm Rotation</p>
+                            <p class="text-sm text-yellow-700">Practice these drills to improve your bowling.</p>
+                        </div>
+                        <div class="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                            <p class="font-semibold text-blue-800">Weakness: Reaction Time</p>
+                            <p class="text-sm text-blue-700">Play this game to increase your speed and agility.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Coach & Scout Options Card -->
+                <div class="bg-white p-6 rounded-2xl shadow-xl">
+                    <h2 class="text-2xl font-bold mb-4 text-gray-900">Opportunities</h2>
+                    <p class="text-gray-600 mb-4">Connect with coaches and scouts to take your career to the next level.</p>
+                    <button class="w-full bg-gray-800 text-white py-3 px-6 rounded-xl font-semibold hover:bg-gray-700 transition-colors duration-300 transform hover:scale-105">
+                        Connect with the TALENTO Network
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coach Dashboard Page (simple placeholder) -->
+    <section id="coach-dashboard" class="hidden h-screen flex items-center justify-center">
+        <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md mx-4 text-center">
+            <img src="TALENTO.png" alt="TALENTO Logo" class="w-32 mx-auto mb-6">
+            <h1 class="text-3xl font-bold mb-4 text-gray-900">Coach Dashboard</h1>
+            <p class="text-gray-600 mb-6">You can discover and connect with new athletes here.</p>
+            <button onclick="showPage('login-page')" class="mt-4 text-orange-600 font-semibold hover:underline">
+                Go Back
+            </button>
+        </div>
+    </section>
+
+    <script>
+        // Pages
+        const loginPage = document.getElementById('login-page');
+        const athleteSelection = document.getElementById('athlete-selection');
+        const athleteDashboard = document.getElementById('athlete-dashboard');
+        const coachDashboard = document.getElementById('coach-dashboard');
+        const signupForm = document.getElementById('signup-form');
+
+        // Function to show a specific page and hide others
+        function showPage(pageId) {
+            loginPage.classList.add('hidden');
+            athleteSelection.classList.add('hidden');
+            athleteDashboard.classList.add('hidden');
+            coachDashboard.classList.add('hidden');
+            signupForm.classList.add('hidden');
+
+            document.getElementById(pageId).classList.remove('hidden');
+        }
+
+        // Function to show the signup form with a specific user type
+        function showForm(formId, userType) {
+            document.getElementById('signup-message').textContent = `Sign up as a ${userType}.`;
+            signupForm.classList.remove('hidden');
+            // You can pre-select the user type in the dropdown here if needed
+            document.getElementById('user-type').value = userType;
+        }
+
+        // Function to hide the signup form
+        function hideForm(formId) {
+            document.getElementById(formId).classList.add('hidden');
+        }
+
+        // Dummy functions for login and signup - replace with real logic
+        function loginUser(userType) {
+            if (userType === 'athlete') {
+                alert('Athlete Login successful! Redirecting to dashboard...');
+                showPage('athlete-selection');
+            } else if (userType === 'coach') {
+                alert('Coach Login successful! Redirecting to dashboard...');
+                showPage('coach-dashboard');
+            }
+        }
+
+        function signupUser() {
+            const userType = document.getElementById('user-type').value;
+            if (userType === 'athlete') {
+                alert('Athlete Sign up successful! Redirecting to onboarding...');
+                showPage('athlete-selection');
+            } else if (userType === 'coach') {
+                alert('Coach Sign up successful! Redirecting to dashboard...');
+                showPage('coach-dashboard');
+            } else {
+                alert('Please select a user type.');
+            }
+        }
+        
+        // Function to handle sport selection
+        function selectSport(sport) {
+            console.log("Selected sport: " + sport);
+            document.getElementById('selected-sport-display').textContent = 'Sport: ' + sport;
+            showPage('athlete-dashboard');
+        }
+    </script>
+</body>
+</html>
